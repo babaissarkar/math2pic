@@ -1,0 +1,36 @@
+%  This program is free software; you can redistribute it and/or modify
+%  it under the terms of the GNU General Public License as published by
+%  the Free Software Foundation; either version 2 of the License, or
+%  (at your option) any later version.
+%  
+%  This program is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%  GNU General Public License for more details.
+%  
+%  You should have received a copy of the GNU General Public License
+%  along with this program; if not, write to the Free Software
+%  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+%  MA 02110-1301, USA.
+%  
+
+% Subhrman Sarkar, 30.09.2020
+
+% Implementing the idea of TeX stackexchange question 34054
+
+% A template inside which the input tex file with
+% the equation to be converted will be inserted
+% (via the \input{} macro),
+% and then this file will be compiled by latex.
+
+% Needs to be compiled with the -shell-escape option to pdflatex/xelatex
+
+\documentclass[convert={density=150, outext=.jpg}]{standalone}
+\usepackage{amsmath, amssymb}
+\usepackage{varwidth}
+
+\begin{document}
+\begin{varwidth}{\linewidth}
+	\input{input.tex}	
+\end{varwidth}
+\end{document}

@@ -1,0 +1,49 @@
+#! /bin/bash
+
+#  ss_tex2jpg
+ 
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+
+# Subhrman Sarkar, 30.09.2020
+
+# This shell script converts a tex file with only tex math mode formulae to a jpg image ready for inclusion.
+# Please put the eqn_sample.tex file in ~/Templates directory.
+
+# Creates a temporary dirctory .tempfiles in the current directory.
+# Then copies the filen eqn_sample.tex and the input file there.
+# Finally it runs xelatex on the eqn_sample.tex file to get
+# the generated image.
+# The generated image is then moved and the temporary files deleted.
+echo "Creating temporary directory..."
+mkdir -v .tempfiles
+#cd .tempfiles
+echo "Copying necessary files..."
+cp -v ~/Templates/eqn_sample.tex ./.tempfiles/eqn_sample.tex
+cp -v $(realpath $1) ./.tempfiles/input.tex
+cd .tempfiles
+echo "Compiling expression with xetex..."
+xelatex --interaction=batchmode -shell-escape eqn_sample.tex 2>&1 > /dev/null
+echo "Done compiling."
+target=$(echo "$1"|sed 's/tex/jpg/')
+echo "Output image written to $target."
+echo "Cleaning up..."
+if [ -f "eqn_sample.jpg" ] ; then
+	mv -v eqn_sample.jpg $(realpath ../$target)
+fi
+cd ..
+rm -rfv .tempfiles
+#echo "Done converting. File $target generated."
+
